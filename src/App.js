@@ -1,23 +1,39 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from "react";
+import { binaryFormat } from "./dayjs/formats";
 import './App.css';
+import {stopWatchBaseValue} from "./utils/constants";
+import dayjs from "dayjs";
 
-function App() {
+const App = () => {
+  const [timer, setTimer] = useState(binaryFormat(new Date()));
+
+  const updateCurrentTime = () => {
+    return setTimer(() => binaryFormat(new Date()));
+  }
+
+  useEffect(() => {
+    const update = setInterval(updateCurrentTime, 1000);
+
+    // console.log(stopWatchBaseValue.getHours(), 'BASE VALUE HOURS');
+    // console.log(stopWatchBaseValue, 'BASE DATE');
+    const stopWatchToBeValue = dayjs(stopWatchBaseValue).subtract(60, 'hours');
+
+    // console.log(stopWatchToBeValue, 'TO BE HOURS');
+
+    // const final = dayjs(dayjs(stopWatchBaseValue)).subtract(stopWatchToBeValue);
+
+    console.log(stopWatchBaseValue, stopWatchToBeValue)
+
+    console.log(binaryFormat(dayjs(stopWatchBaseValue).diff(stopWatchToBeValue, 'hours')))
+
+    // console.log('FINAL', binaryFormat(final))
+
+    // console.log('TIMER', timer);
+  }, [timer]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <span className='timer'>{timer}</span>
     </div>
   );
 }
